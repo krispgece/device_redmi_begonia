@@ -66,6 +66,12 @@ def Firmware_Images(info, incremental):
   pl = 'preloader_ufs'
   pl_part = ['sda', 'sdb']
 
+  # No verified stock LK for the Indian variant is available. The lk_in.img
+  # that used to ship here was a kaeru-patched build, which fails the dtbo
+  # secure-boot check ("[SBC] image dtbo auth init fail (0x7027)") and drops
+  # the device into recovery, so leave the device's own LK alone.
+  img_map_in = {k: v for k, v in img_map.items() if k != 'lk'}
+
   fw_cmd = 'ifelse(getprop("ro.boot.hwc") == "India",\n(\n'
   fw_cmd += 'ui_print("Flashing begoniain (Indian) Firmware...");\n'
 
@@ -74,9 +80,9 @@ def Firmware_Images(info, incremental):
   for part in pl_part:
       fw_cmd += 'package_extract_file("{}_in.img", "/dev/block/{}");\n'.format(pl, part)
 
-  for img in img_map.keys():
+  for img in img_map_in.keys():
     AddImageOnly(info, '{}_in.img'.format(img), incremental, True)
-    for part in img_map[img]:
+    for part in img_map_in[img]:
       fw_cmd += 'package_extract_file("{}_in.img", "/dev/block/bootdevice/by-name/{}");\n'.format(img, part)
 
   for _bin in bin_map.keys():
