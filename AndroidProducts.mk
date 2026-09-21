@@ -15,4 +15,5 @@
 #
 
 PRODUCT_MAKEFILES := \
+    $(LOCAL_DIR)/infinity_begonia.mk \
     $(LOCAL_DIR)/lineage_begonia.mk
