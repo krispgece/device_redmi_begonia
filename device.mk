@@ -133,11 +133,20 @@ PRODUCT_PACKAGES += \
 PRODUCT_COPY_FILES += \
     $(DEVICE_PATH)/configs/media/media_codecs.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs.xml \
     $(DEVICE_PATH)/configs/media/media_codecs_dolby_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_dolby_audio.xml \
+    $(DEVICE_PATH)/configs/media/media_codecs_mediatek_audio.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_mediatek_audio.xml \
+    $(DEVICE_PATH)/configs/media/media_codecs_mediatek_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_mediatek_video.xml \
     $(DEVICE_PATH)/configs/media/media_codecs_performance.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_performance.xml \
     $(DEVICE_PATH)/configs/media/media_profiles_V1_0.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_profiles_V1_0.xml
 
 PRODUCT_PACKAGES += \
     libstagefright_foundation-v33
+
+# libMtkOmxVdecEx.so is patched to load libui_shim.so for the removed
+# GraphicBufferMapper::lock() overload. The May 2025 "Bring back OMX" attempt
+# shipped the patched blob without this package, so the OMX core never loaded.
+PRODUCT_PACKAGES += \
+    libui_shim \
+    libui_shim.vendor
 
 # MTK In-Call volumes adjusting service
 PRODUCT_PACKAGES += \
@@ -306,3 +315,4 @@ PRODUCT_COPY_FILES += \
 
 # Inherit vendor
 $(call inherit-product, vendor/redmi/begonia/begonia-vendor.mk)
+
