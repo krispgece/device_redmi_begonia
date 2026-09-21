@@ -141,6 +141,11 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     libstagefright_foundation-v33
 
+# MiuiCamera hands the last recorded video to MIUI's media viewer; see
+# packages/apps/MiuiMediaViewerStub.
+PRODUCT_PACKAGES += \
+    MiuiMediaViewerStub
+
 # libMtkOmxVdecEx.so is patched to load libui_shim.so for the removed
 # GraphicBufferMapper::lock() overload. The May 2025 "Bring back OMX" attempt
 # shipped the patched blob without this package, so the OMX core never loaded.

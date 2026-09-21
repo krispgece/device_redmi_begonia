@@ -1,0 +1,13 @@
+// MiuiCamera opens the last recorded video through MIUI's media viewer
+// ("com.miui.mediaviewer.VIDEO_PLAY", package-restricted). Without that app
+// the intent throws, nothing opens, and the camera sits with its preview
+// paused. This stub claims that package/action and forwards to the system
+// video viewer with a plain ACTION_VIEW. Photos never take this path.
+android_app {
+    name: "MiuiMediaViewerStub",
+    srcs: ["src/**/*.java"],
+    sdk_version: "current",
+    optimize: {
+        enabled: false,
+    },
+}
