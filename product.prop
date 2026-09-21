@@ -1,2 +1,9 @@
 # eBPF
 ro.bpf.kver_override=5.10.247
+
+# About Phone page (Settings AboutPhoneData reads these)
+ro.infinity.codename=begonia
+ro.infinity.soc=MediaTek Helio G90T
+ro.infinity.battery=4500 mAh
+ro.infinity.display=6.53" 2340x1080 60 Hz
+ro.infinity.camera=64+8+2+2 MP / 20 MP
