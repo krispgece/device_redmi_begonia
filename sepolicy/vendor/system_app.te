@@ -4,9 +4,3 @@ allow system_app sysfs_zram:file r_file_perms;
 # FM Radio
 get_prop(system_app, vendor_mtk_wmt_prop)
 get_prop(system_app, vendor_mtk_default_prop)
-
-# XiaomiParts writes the thermal profile to
-# /sys/class/thermal/thermal_message/sconfig
-allow system_app sysfs_therm:dir search;
-allow system_app vendor_sysfs_thermal_message:dir search;
-allow system_app vendor_sysfs_thermal_message:file rw_file_perms;

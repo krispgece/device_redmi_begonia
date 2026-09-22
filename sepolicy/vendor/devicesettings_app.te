@@ -1,0 +1,7 @@
+# XiaomiParts switches the thermal profile through
+# /sys/class/thermal/thermal_message/sconfig, which is a class symlink to
+# /sys/devices/virtual/thermal/thermal_message.
+allow devicesettings_app sysfs_therm:dir search;
+allow devicesettings_app sysfs_therm:lnk_file read;
+allow devicesettings_app vendor_sysfs_thermal_message:dir search;
+allow devicesettings_app vendor_sysfs_thermal_message:file rw_file_perms;
