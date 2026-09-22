@@ -603,7 +603,7 @@ vendor/lib/libladder.so
 vendor/lib64/libladder.so
 
 # Dolby
-vendor/bin/hw/vendor.dolby.hardware.dms@2.0-service|2412363dfaeded2fd363457421a1931a7b8417ff
+vendor/bin/hw/vendor.dolby.hardware.dms@2.0-service|2412363dfaeded2fd363457421a1931a7b8417ff|2412363dfaeded2fd363457421a1931a7b8417ff
 vendor/etc/dolby/dax-default.xml|d9e6c5995eb6bf903333c7d6362ecd159cc9a2af
 vendor/etc/init/vendor.dolby.hardware.dms@2.0-service.rc|29296ebfe89b2697fec573be73cc3757fd97bed6
 vendor/etc/vintf/manifest/manifest_vendor.dolby.hardware.dms.xml|c8095f649de19b80271fb429b4b6b439297a0678
@@ -761,13 +761,15 @@ vendor/lib/vendor.mediatek.hardware.mtkcodecservice@1.1.so
 # Media (Configs)
 vendor/etc/mtk_omx_core.cfg|59d693036a4c70a9b456d34bcecaaadac8fb9406
 
-# Media (OMX) - pinned: dropped from the dumps this tree extracts from
+# Media (OMX) - pinned: the stock dump carries different builds of these
+# (libMtkOmxCore bff540c1, libstagefrighthw 56fd4ba9, libMtkOmxVdecEx
+# 27c1975a); the copies below are the ones this ROM was tested with
 vendor/lib/libMtkOmxGsmDec.so|4dd316a203754e0cb0e9b056e87be1f8ad1d0ba4
 vendor/lib/libMtkOmxApeDec.so|e7c2a880c8858971f98be984fb917587c5b4aa5f
 vendor/lib/libMtkOmxCore.so|499fb56c7bbdf9b60f3d908cab5cc8530860b593
 vendor/lib/libMtkOmxAlacDec.so|1185d6a90b68f045cc6a2bb52f52948d32b718b8
 vendor/lib/libMtkOmxMp3Dec.so|9f847048643bf86d3588163f8b6f7df5fbb9a140
-vendor/lib/libMtkOmxVdecEx.so|d5c8bede3ab2718bd4d910de3aa1d9ef453ae169
+vendor/lib/libMtkOmxVdecEx.so|d5c8bede3ab2718bd4d910de3aa1d9ef453ae169|d5c8bede3ab2718bd4d910de3aa1d9ef453ae169
 vendor/lib/libMtkOmxAdpcmDec.so|abc6a9ee95eddf215ff23c04f0b80b1cf85b1d10
 vendor/lib/libMtkOmxVenc.so|6750cfd75a947fe3b8111ba578b3c63b9da01a39
 vendor/lib/libstagefrighthw.so|8deb7fd19eae795f7af9350e1a71c5b58ede5ae7
