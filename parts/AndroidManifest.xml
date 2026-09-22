@@ -40,6 +40,10 @@
             </intent-filter>
         </receiver>
 
+        <service
+            android:name=".thermal.ThermalService"
+            android:exported="false" />
+
         <activity
             android:name=".thermal.ThermalActivity"
             android:label="@string/thermal_title"
