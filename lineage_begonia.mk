@@ -49,7 +49,4 @@ PRODUCT_BUILD_PROP_OVERRIDES += \
     BuildDesc="begonia-user 11 RP1A.200720.011 V12.5.8.0.RGGMIXM release-keys" \
     DeviceName="begonia"
 
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.build.fingerprint=$(BUILD_FINGERPRINT)
-
 PRODUCT_GMS_CLIENTID_BASE := android-xiaomi

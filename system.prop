@@ -3,6 +3,9 @@ ro.audio.silent=0
 ro.config.vc_call_vol_steps=7
 ro.config.media_vol_steps=15
 
+# Bluetooth
+bluetooth.device_id.vendor_id=0x0046
+
 # Brand
 Build.BRAND=MTK
 
@@ -55,3 +58,4 @@ wifi.tethering.interface=ap0
 
 # Zygote
 ro.zygote.preload.enable=0
+persist.device_config.runtime_native.usap_pool_enabled=true
