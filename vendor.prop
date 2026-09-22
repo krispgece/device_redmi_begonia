@@ -49,8 +49,6 @@ vendor.bluetooth.ldac.abr=true
 
 # Camera
 vendor.camera.aux.packagelist=com.android.camera,org.lineageos.aperture.dev,com.voltage.flash
-persist.camera.HAL3.enabled=1
-persist.camera.eis.enabled=1
 persist.vendor.camera.privapp.list=org.codeaurora.snapcam,com.android.camera,com.google.camera
 persist.vendor.camera3.operationMode.superNightMode=0x800A
 persist.vendor.camera3.pipeline.bufnum.base.imgo=4
@@ -67,13 +65,6 @@ persist.vendor.camera3.pipeline.bufnum.min.low_ram.imgo=6
 persist.vendor.camera3.pipeline.bufnum.min.low_ram.lcso=6
 persist.vendor.camera3.pipeline.bufnum.min.low_ram.rrzo=6
 persist.vendor.camera3.pipeline.bufnum.min.low_ram.rsso=6
-ro.camera.sensor.id_rear=0
-ro.camera.sensor.id_front=1
-ro.camera.sensor.highres.0=[[9248:6936:33:0],[9280:6944:32:1]]
-ro.camera.sensor.highres.1=[[5184:3880:33:0],[5184:2920:33:0],[5184:2392:33:0],[3888:3888:33:0]]
-ro.camera.sensor.highres.0.max=9280:6944
-ro.mtk_cam_dualzoom_support=1
-ro.mtk_cam_stereo_camera_support=1
 ro.vendor.camera3.zsl.default=270
 ro.vendor.mtk_camera_app_version=3
 ro.vendor.mtk_hdr_video_support=1
@@ -131,21 +122,6 @@ vendor.displayfeature_hidl=true
 
 # FM Radio
 persist.vendor.connsys.fm_chipid=mt6631
-ro.fm.chip=0x6631
-ro.fm.band=1
-ro.fm.low_band=875
-ro.fm.high_band=1080
-ro.fm.seek_space=1
-ro.fm.max_scan_num=40
-ro.fm.seek_lev=4
-ro.fm.scan_sort=0
-ro.fm.short_ana_sup=1
-ro.fm.rssi_th_l2=-102
-ro.fm.fake_chans=4
-ro.fm.fake_chan_0=9210 -205
-ro.fm.fake_chan_1=9600 -152
-ro.fm.fake_chan_2=10400 -152
-ro.fm.fake_chan_3=10750 -205
 
 # GNSS
 ro.vendor.mtk_agps_app=1
@@ -174,7 +150,6 @@ persist.sys.sf.color_mode=0
 persist.sys.sf.native_mode=2
 ro.opengles.version=196610
 ro.sf.lcd_density=440
-ro.hwui.render_ahead=2
 ro.surface_flinger.max_frame_buffer_acquired_buffers=3
 ro.surface_flinger.enable_frame_rate_override=false
 ro.surface_flinger.force_hwc_copy_for_virtual_displays=true
@@ -192,7 +167,6 @@ debug.hwui.use_hint_manager=true
 debug.hwui.target_cpu_time_percent=30
 
 # IMS
-persist.dbg.ims_volte_enable=1
 persist.dbg.volte_avail_ovr=1
 persist.dbg.vt_avail_ovr=1
 persist.dbg.wfc_avail_ovr=1
@@ -236,7 +210,6 @@ vendor.mtk.vdec.waitkeyframeforplay=9
 # Mediatek
 debug.mediatek.disp_decompress=1
 debug.mediatek.game_pq_enable=1
-ro.mtk_soter_support=1
 ro.vendor.mediatek.platform=MT6785
 ro.vendor.mediatek.version.branch=alps-mp-r0.mp1.tc8sp
 ro.vendor.mediatek.version.release=alps-mp-r0.mp1.tc8sp-V1_xiaomi.mgr.r0mp1.k6889v1.64_P100
@@ -284,7 +257,6 @@ persist.vendor.radio.mtk_ps3_rat=G
 persist.vendor.radio.smart.data.switch=1
 ro.telephony.default_network=10,10,10,10
 ro.telephony.iwlan_operation_mode=default
-ro.telephony.sim.count=2
 ro.vendor.ap_info_monitor=0
 ro.vendor.md_log_memdump_wait=15
 ro.vendor.md_prop_ver=1
