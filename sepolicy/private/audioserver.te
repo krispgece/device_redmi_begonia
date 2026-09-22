@@ -1,0 +1,3 @@
+# libaudiopolicycomponents reads ro.vendor.qti.va_aosp.support, a Qualcomm
+# property that is never set here.
+dontaudit audioserver vendor_default_prop:file r_file_perms;

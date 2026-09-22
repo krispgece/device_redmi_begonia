@@ -1,1 +1,6 @@
 allow fuelgauged_nvram sysfs_dt_firmware_android:dir search;
+
+# libfs_mgr probes /sys/firmware/devicetree/base/firmware/android/compatible
+# for a DT fstab; begonia keeps its fstab in /vendor/etc, so the probe can
+# only fail.
+dontaudit fuelgauged_nvram sysfs_dt_firmware_android:file r_file_perms;

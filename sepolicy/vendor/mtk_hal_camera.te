@@ -12,3 +12,7 @@ hal_client_domain(mtk_hal_camera, hal_power)
 allow mtk_hal_camera persist_data_file:file getattr;
 allow mtk_hal_camera vendor_data_file:dir { read write search add_name };
 allow mtk_hal_camera vendor_data_file:file { create rw_file_perms getattr };
+
+# Dual camera calibration (rear_dc_cal_wt.bin) lives on the persist partition
+allow mtk_hal_camera vendor_persist_camera_file:dir r_dir_perms;
+allow mtk_hal_camera vendor_persist_camera_file:file r_file_perms;

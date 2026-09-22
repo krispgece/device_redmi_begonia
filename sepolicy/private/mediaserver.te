@@ -1,0 +1,3 @@
+# MediaProfiles reads vendor.media.target.version and OMXStore reads
+# vendor.media.omx; both are unset and fall back to their defaults.
+dontaudit mediaserver vendor_default_prop:file r_file_perms;

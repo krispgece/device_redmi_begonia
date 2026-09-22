@@ -1,0 +1,9 @@
+# mtkfusionrild reads system-internal properties the MTK policy never granted
+# to a vendor domain (ril.cdma.inecmmode, ro.vendor.mtk_gwsd_support,
+# persist.vendor.logmuch). Vendor domains cannot be allowed to read
+# system_internal_property_type, so only silence the probes.
+dontaudit hal_telephony_server {
+  radio_cdma_ecm_prop
+  system_mtk_gwsd_prop
+  system_mtk_logmuch_prop
+}:file r_file_perms;

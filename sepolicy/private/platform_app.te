@@ -1,2 +1,6 @@
 # Dolby
 hal_client_domain(platform_app, hal_dms)
+
+# SystemUI asks whether the device can act as a USB webcam; apps other than
+# system_app are neverallowed to read ro.usb.uvc.enabled.
+dontaudit platform_app usb_uvc_enabled_prop:file r_file_perms;

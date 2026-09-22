@@ -1,0 +1,3 @@
+# The composer blob polls init.svc.displayfeature-hal-1-0; that service does
+# not exist on this build.
+dontaudit hal_graphics_composer_server init_service_status_private_prop:file r_file_perms;

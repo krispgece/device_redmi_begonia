@@ -10,3 +10,12 @@ genfscon sysfs /kernel/gpu/gpu_(min|max)_clock                                  
 
 # Torch
 genfscon sysfs /devices/platform/flashlights_mt6360/torchbrightness                                                             u:object_r:vendor_torch_sysfs:s0
+
+# Extcon (WiredAccessoryManager reads the cable names at boot)
+genfscon sysfs /devices/platform/extcon_usb/extcon                                                                              u:object_r:sysfs_extcon:s0
+
+# Scheduler tunable written from init.mt6785.rc
+genfscon proc /sys/kernel/sched_stune_task_threshold                                                                            u:object_r:proc_sched:s0
+
+# Thermal
+genfscon sysfs /devices/virtual/thermal/thermal_message                                                                         u:object_r:vendor_sysfs_thermal_message:s0
