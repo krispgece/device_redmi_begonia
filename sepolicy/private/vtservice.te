@@ -1,0 +1,11 @@
+# vtservice resolves the AIDL VideoTelephony HAL name
+# vendor.mediatek.hardware.videotelephony.IVideoTelephony/default. Only the
+# HIDL name is labelled (MediaTek hwservice_contexts) and no VT HAL is
+# shipped here, so the lookup falls through to the default service label.
+dontaudit vtservice default_android_service:service_manager find;
+
+# libmtk_vt_service reads init.svc.vendor.volte_imcb,
+# persist.vendor.log.tag.tel_dbg, ro.vendor.mtk_data_config and
+# ro.vendor.vt.mtk_thin_md_support_mode. vtservice is coredomain, which may
+# not be granted vendor_default_prop; all four are unset and fall back.
+dontaudit vtservice vendor_default_prop:file r_file_perms;
