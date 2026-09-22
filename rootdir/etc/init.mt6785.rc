@@ -95,6 +95,9 @@ on fs
     #Audio-add
     chmod 0771 /mnt/vendor/persist/audio
 
+    # Camera calibration data carries stock labels
+    restorecon_recursive /mnt/vendor/persist/camera
+
 on late-fs
     write /proc/bootprof "INIT:late-fs"
     mount_all --late
@@ -958,7 +961,3 @@ on property:sys.boot_completed=1
     # Restrict permissions to socket file
     # to hide Magisk & co.
     chmod 440 /proc/net/unix
-
-on boot
-    # SELinux
-    write /sys/fs/selinux/enforce 1
