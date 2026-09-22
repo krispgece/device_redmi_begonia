@@ -84,8 +84,8 @@ blob_fixups: blob_fixups_user_type = {
     'vendor/lib/libmnl.so': blob_fixup()
         .add_needed('libcutils.so'),
 
-    'system/lib/libmtk_vt_service.so': blob_fixup()
-        .add_needed('libgui_shim.so'),
+    'system/etc/init/init.vtservice.rc': blob_fixup()
+        .regex_replace('/system_ext/bin/vtservice', '/system/bin/vtservice'),
 
     'system/lib64/libimsma.so': blob_fixup()
         .replace_needed('libsink.so', 'libsink-mtk.so'),

@@ -956,7 +956,7 @@ vendor/lib64/vendor.mediatek.hardware.mtkradioex@2.0.so
 
 # IMS - from TECNO-U-64-ARMV82-230626V601DevT
 system_ext/bin/vtservice:system/bin/vtservice|59adc81ee1ad1f3fb4942cd6e8e7100325002eb2
-system_ext/etc/init/init.vtservice.rc:system/etc/init/init.vtservice.rc|50a2249906edc06059b443513db47a2ddc0490dc
+system_ext/etc/init/init.vtservice.rc:system/etc/init/init.vtservice.rc|50a2249906edc06059b443513db47a2ddc0490dc|6468e341287e3d1a56574f7018a76bae6ffc6902
 system_ext/lib64/libcomutils.so:system/lib64/libcomutils.so|6d9cd979f33ef01cb26861a38a59e76e1c2a3acb
 system_ext/lib64/libimsma.so:system/lib64/libimsma.so|932cbe88083fae23b159bf0e3fe17d7efb93495b|981ade90e42a9945390dbef0b68daa85357253ae
 system_ext/lib64/libimsma_adapt.so:system/lib64/libimsma_adapt.so|754ad1c39fb4dba9d3eb69ac00112e7600d68580
