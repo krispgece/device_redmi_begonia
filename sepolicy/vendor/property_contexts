@@ -8,6 +8,8 @@ vendor.camera.sensor.rearTele.fuseID  u:object_r:vendor_mi_camera_prop:s0 exact 
 vendor.camera.sensor.rearUltra.fuseID u:object_r:vendor_mi_camera_prop:s0 exact string
 camera.sensor.rearmain.eepromFuseid   u:object_r:vendor_mi_camera_prop:s0 exact string
 persist.camera.dualcal.state          u:object_r:vendor_mi_camera_prop:s0 exact string
+persist.camera.aiasd.                 u:object_r:vendor_mi_camera_prop:s0
+persist.camera.altekLDC.              u:object_r:vendor_mi_camera_prop:s0
 
 # Fingerprint
 fpc_kpi                    u:object_r:vendor_fp_prop:s0
