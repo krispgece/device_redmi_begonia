@@ -106,9 +106,4 @@ def Firmware_Images(info, incremental):
 
   fw_cmd += ')\n);\n'
 
-  # Flash prebuilt recovery
-  fw_cmd += 'ui_print("Flashing Prebuilt Recovery...");\n'
-  AddImageOnly(info, 'twrp.img', incremental, True)
-  fw_cmd += 'package_extract_file("twrp.img", "/dev/block/bootdevice/by-name/recovery");'
-
   info.script.AppendExtra(fw_cmd)
