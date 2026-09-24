@@ -172,6 +172,11 @@ PRODUCT_PACKAGES += \
     com.android.nfc_extras \
     Tag
 
+# Dynamic partitions
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
+PRODUCT_PACKAGES += \
+    fastbootd
+
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
     $(DEVICE_PATH)/overlay \

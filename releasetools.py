@@ -17,6 +17,19 @@
 import common
 import re
 
+def FullOTA_InstallBegin(info):
+  # Dynamic partitions: the zip's updater needs a recovery that knows super lives on
+  # by-name/system. Stop before anything is written if it does not.
+  check = ("for k in force_super_partition super_partition; do "
+           "v=$(getprop ro.boot.$k); [ ${#v} -gt 0 ] && break; "
+           "v=$(cat /proc/device-tree/firmware/android/$k 2>/dev/null); [ ${#v} -gt 0 ] && break; "
+           "v=$(tr ' ' '\\n' < /proc/cmdline | sed -n 's/^androidboot.'$k'=//p'); [ ${#v} -gt 0 ] && break; "
+           "done; [ -e /dev/block/by-name/${v:-super} ]")
+  info.script.AppendExtra('ifelse(run_program("/system/bin/sh", "-c", "%s") == "0", '
+                          'ui_print("Dynamic partitions: super device found"), '
+                          'abort("E: This build uses dynamic partitions. Flash a recovery that supports them '
+                          '(see the XDA thread), then try again. Nothing was changed."));' % check)
+
 def FullOTA_InstallEnd(info):
   OTA_InstallEnd(info, False)
 

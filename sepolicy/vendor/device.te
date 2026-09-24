@@ -1,0 +1,2 @@
+typeattribute system_block_device super_block_device_type;
+typeattribute vendor_block_device super_block_device_type;
