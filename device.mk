@@ -172,6 +172,10 @@ PRODUCT_PACKAGES += \
     com.android.nfc_extras \
     Tag
 
+# Telephony
+PRODUCT_VENDOR_PROPERTIES += \
+    ro.com.android.dataroaming=false
+
 # Dynamic partitions
 PRODUCT_USE_DYNAMIC_PARTITIONS := true
 PRODUCT_PACKAGES += \
