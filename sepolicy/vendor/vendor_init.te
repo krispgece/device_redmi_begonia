@@ -6,3 +6,9 @@ allow vendor_init proc_net:file write;
 
 set_prop(vendor_init, vendor_thermal_engine_prop)
 set_prop(vendor_init, vendor_audio_prop)
+
+# init.mt6785.rc and init.cccifsd.rc still try to create /data/vendor_de/meta and
+# /data/vendor_de/md, an Android 11 leftover. Only vold may add entries to
+# vendor_userdir_file (vold.te neverallow), so the mkdir fails on clean installs.
+# The modem works without them; keep the denial out of the log.
+dontaudit vendor_init vendor_userdir_file:dir { write add_name };
