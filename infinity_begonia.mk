@@ -27,7 +27,13 @@ $(call inherit-product-if-exists, vendor/MiuiCameraLeica/config.mk)
 
 INFINITY_BUILD_TYPE := UNOFFICIAL
 INFINITY_MAINTAINER := krispgece
-WITH_GAPPS := true
+WITH_GAPPS ?= true
+
+ifeq ($(WITH_GAPPS),true)
+DEVICE_PACKAGE_OVERLAYS += device/redmi/begonia/overlay-updater/gapps
+else
+DEVICE_PACKAGE_OVERLAYS += device/redmi/begonia/overlay-updater/vanilla
+endif
 
 # Boot animation
 TARGET_BOOT_ANIMATION_RES := 1920
