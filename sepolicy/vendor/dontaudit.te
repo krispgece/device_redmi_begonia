@@ -15,3 +15,8 @@ dontaudit mnld default_prop:file r_file_perms;
 
 # vold's idle maintenance tries to open /mnt/vendor/persist for fstrim.
 dontaudit vold persist_data_file:dir r_dir_perms;
+
+# CachedAppOptimizer's system compaction stats /proc/<entry>/status for every
+# /proc directory. MTK labels /proc/irq proc_irq, so the lookup is denied
+# instead of failing with ENOENT; the loop just skips it.
+dontaudit system_server proc_irq:dir search;

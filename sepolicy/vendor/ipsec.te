@@ -1,0 +1,19 @@
+# MediaTek strongSwan 5.1.2 (starter, charon, stroke) runs as root in the
+# ipsec domain, forked by epdg_wod (vendor/etc/init/init.wod.rc). MediaTek's
+# own ipsec policy is unchanged; these only keep its expected failures out
+# of the log.
+
+# libstrongswan opens /sys/power/wake_lock and wake_unlock (radio:wakelock
+# 0660) read/write at library init. uid 0 without the wakelock group needs
+# CAP_DAC_OVERRIDE, which domain.te neverallows; charon's alarm-timer wake
+# lock just stays unused.
+dontaudit ipsec self:capability dac_override;
+
+# charon's kernel-netlink plugin tries to set
+# /proc/sys/net/core/xfrm_acq_expires to strongSwan's 165 s default. init.rc
+# sets 3600 for IpSecService SPI reservations; keep that value.
+dontaudit ipsec proc_net:file open;
+
+# charon fchown()s /data/vendor/ipsec/charon.pid to its own uid:gid (0:0),
+# a no-op on the file it has just created, and ignores the result.
+dontaudit ipsec wod_ipsec_conf_file:file setattr;
