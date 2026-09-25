@@ -1,0 +1,227 @@
+From 9aa0944d2d60c142274474d72ab842d9a89da829 Mon Sep 17 00:00:00 2001
+From: krispgece <329631437+krispgece@users.noreply.github.com>
+Date: Fri, 25 Sep 2026 16:33:21 +0300
+Subject: [PATCH 11/11] ImsService: Match the JNI of the Android 16 video
+ telephony libraries
+
+The video telephony libraries now come from an Android 16 build. Its
+libmtk_vt_wrapper exports 16 natives instead of 21: nInitialization
+takes a third, boolean argument, and nSetCameraParametersWithSim,
+nSwitchFeature, nSnapshot, nStartRecording and nStopRecording are gone.
+The JNI functions are looked up by name, so a stale declaration does
+not fail to load; it passes a missing argument or throws
+UnsatisfiedLinkError in the IMS process once it is called.
+
+- nInitialization(II)I becomes (IIZ)I. Like Xiaomi's own Android 16
+  ImsService, pass true when the call id comes from the 130 URC (a
+  mobile-originated call) and false when the session is created with
+  a call id (a mobile-terminated call). bind() hands the flag to the
+  provider handler in Message.arg1.
+- postEventFromNative calls nSetCameraParameters instead of
+  nSetCameraParametersWithSim, as Xiaomi's does.
+- switchFeatureInternal no longer calls nSwitchFeature. Xiaomi's drops
+  the call as well and keeps only resetState(); the result was never
+  used.
+- Drop the declarations of the natives the library no longer has.
+  Nothing calls nSnapshot, nStartRecording or nStopRecording.
+---
+ .../ims/ImsCallSessionProxy$MyHandler.smali   |  2 +-
+ .../mediatek/ims/internal/ImsVTProvider.smali | 23 ++-----------
+ .../ims/internal/ImsVTProviderUtil$2.smali    | 16 +++++++--
+ .../ims/internal/ImsVTProviderUtil.smali      | 34 +++++++++++++++++--
+ 4 files changed, 49 insertions(+), 26 deletions(-)
+
+diff --git a/smali/com/mediatek/ims/ImsCallSessionProxy$MyHandler.smali b/smali/com/mediatek/ims/ImsCallSessionProxy$MyHandler.smali
+index 48e4546..35c8f6d 100644
+--- a/smali/com/mediatek/ims/ImsCallSessionProxy$MyHandler.smali
++++ b/smali/com/mediatek/ims/ImsCallSessionProxy$MyHandler.smali
+@@ -10187,7 +10187,7 @@
+ 
+     move-result v10
+ 
+-    invoke-virtual {v6, v8, v9, v10}, Lcom/mediatek/ims/internal/ImsVTProviderUtil;->bind(Lcom/mediatek/ims/internal/ImsVTProvider;II)V
++    invoke-virtual {v6, v8, v9, v10}, Lcom/mediatek/ims/internal/ImsVTProviderUtil;->bindMoCall(Lcom/mediatek/ims/internal/ImsVTProvider;II)V
+ 
+     .line 2365
+     :cond_5c
+diff --git a/smali/com/mediatek/ims/internal/ImsVTProvider.smali b/smali/com/mediatek/ims/internal/ImsVTProvider.smali
+index 287be3f..2421f21 100644
+--- a/smali/com/mediatek/ims/internal/ImsVTProvider.smali
++++ b/smali/com/mediatek/ims/internal/ImsVTProvider.smali
+@@ -557,7 +557,7 @@
+ .method public static native nInitRefVTP()I
+ .end method
+ 
+-.method public static native nInitialization(II)I
++.method public static native nInitialization(IIZ)I
+ .end method
+ 
+ .method public static native nRequestPeerConfig(ILjava/lang/String;)I
+@@ -575,9 +575,6 @@
+ .method public static native nSetCameraParametersOnly([Lcom/mediatek/ims/internal/VTSource$Resolution;)I
+ .end method
+ 
+-.method public static native nSetCameraParametersWithSim(II[Lcom/mediatek/ims/internal/VTSource$Resolution;)I
+-.end method
+-
+ .method public static native nSetDeviceOrientation(II)I
+ .end method
+ 
+@@ -590,18 +587,6 @@
+ .method public static native nSetUIMode(II)I
+ .end method
+ 
+-.method public static native nSnapshot(IILjava/lang/String;)I
+-.end method
+-
+-.method public static native nStartRecording(IILjava/lang/String;J)I
+-.end method
+-
+-.method public static native nStopRecording(I)I
+-.end method
+-
+-.method public static native nSwitchFeature(III)I
+-.end method
+-
+ .method public static native nTagSocketWithUid(I)I
+ .end method
+ 
+@@ -1285,7 +1270,7 @@
+     .end local v15    # "iccid":Ljava/lang/String;
+     :cond_f
+     :goto_a
+-    invoke-static {v2, v9, v8}, Lcom/mediatek/ims/internal/ImsVTProvider;->nSetCameraParametersWithSim(II[Lcom/mediatek/ims/internal/VTSource$Resolution;)I
++    invoke-static {v2, v8}, Lcom/mediatek/ims/internal/ImsVTProvider;->nSetCameraParameters(I[Lcom/mediatek/ims/internal/VTSource$Resolution;)I
+ 
+     .line 2449
+     goto/16 :goto_12
+@@ -8355,8 +8340,6 @@
+ 
+     const/4 v3, 0x1
+ 
+-    invoke-static {v0, p1, v3}, Lcom/mediatek/ims/internal/ImsVTProvider;->nSwitchFeature(III)I
+-
+     .line 1453
+     invoke-virtual {p0, v3}, Lcom/mediatek/ims/internal/ImsVTProvider;->resetState(I)V
+ 
+@@ -8368,8 +8351,6 @@
+ 
+     const/4 v3, 0x0
+ 
+-    invoke-static {v0, p1, v3}, Lcom/mediatek/ims/internal/ImsVTProvider;->nSwitchFeature(III)I
+-
+     .line 1459
+     :goto_0
+     new-instance v0, Ljava/lang/StringBuilder;
+diff --git a/smali/com/mediatek/ims/internal/ImsVTProviderUtil$2.smali b/smali/com/mediatek/ims/internal/ImsVTProviderUtil$2.smali
+index 0565a70..ebf0aa5 100644
+--- a/smali/com/mediatek/ims/internal/ImsVTProviderUtil$2.smali
++++ b/smali/com/mediatek/ims/internal/ImsVTProviderUtil$2.smali
+@@ -35,7 +35,7 @@
+ 
+ # virtual methods
+ .method public handleMessage(Landroid/os/Message;)V
+-    .locals 5
++    .locals 6
+     .param p1, "msg"    # Landroid/os/Message;
+ 
+     .line 529
+@@ -323,9 +323,21 @@
+ 
+     .line 541
+     .local v3, "pid":I
++    iget v5, p1, Landroid/os/Message;->arg1:I
++
++    if-eqz v5, :cond_bind_mt_call
++
++    const/4 v5, 0x1
++
++    goto :goto_bind_internal
++
++    :cond_bind_mt_call
++    const/4 v5, 0x0
++
++    :goto_bind_internal
+     iget-object v4, p0, Lcom/mediatek/ims/internal/ImsVTProviderUtil$2;->this$0:Lcom/mediatek/ims/internal/ImsVTProviderUtil;
+ 
+-    invoke-virtual {v4, v1, v2, v3}, Lcom/mediatek/ims/internal/ImsVTProviderUtil;->bindInternal(Lcom/mediatek/ims/internal/ImsVTProvider;II)V
++    invoke-virtual {v4, v1, v2, v3, v5}, Lcom/mediatek/ims/internal/ImsVTProviderUtil;->bindInternal(Lcom/mediatek/ims/internal/ImsVTProvider;IIZ)V
+     :try_end_4
+     .catchall {:try_start_4 .. :try_end_4} :catchall_4
+ 
+diff --git a/smali/com/mediatek/ims/internal/ImsVTProviderUtil.smali b/smali/com/mediatek/ims/internal/ImsVTProviderUtil.smali
+index 00d93ca..84462b1 100644
+--- a/smali/com/mediatek/ims/internal/ImsVTProviderUtil.smali
++++ b/smali/com/mediatek/ims/internal/ImsVTProviderUtil.smali
+@@ -821,10 +821,37 @@
+ 
+ # virtual methods
+ .method public bind(Lcom/mediatek/ims/internal/ImsVTProvider;II)V
++    .locals 1
++    .param p1, "p"    # Lcom/mediatek/ims/internal/ImsVTProvider;
++    .param p2, "CallId"    # I
++    .param p3, "PhoneId"    # I
++
++    const/4 v0, 0x0
++
++    invoke-virtual {p0, p1, p2, p3, v0}, Lcom/mediatek/ims/internal/ImsVTProviderUtil;->bind(Lcom/mediatek/ims/internal/ImsVTProvider;IIZ)V
++
++    return-void
++.end method
++
++.method public bindMoCall(Lcom/mediatek/ims/internal/ImsVTProvider;II)V
++    .locals 1
++    .param p1, "p"    # Lcom/mediatek/ims/internal/ImsVTProvider;
++    .param p2, "CallId"    # I
++    .param p3, "PhoneId"    # I
++
++    const/4 v0, 0x1
++
++    invoke-virtual {p0, p1, p2, p3, v0}, Lcom/mediatek/ims/internal/ImsVTProviderUtil;->bind(Lcom/mediatek/ims/internal/ImsVTProvider;IIZ)V
++
++    return-void
++.end method
++
++.method public bind(Lcom/mediatek/ims/internal/ImsVTProvider;IIZ)V
+     .locals 3
+     .param p1, "p"    # Lcom/mediatek/ims/internal/ImsVTProvider;
+     .param p2, "CallId"    # I
+     .param p3, "PhoneId"    # I
++    .param p4, "isMo"    # Z
+ 
+     .line 891
+     invoke-static {}, Lcom/android/internal/os/SomeArgs;->obtain()Lcom/android/internal/os/SomeArgs;
+@@ -858,17 +885,20 @@
+ 
+     move-result-object v1
+ 
++    iput p4, v1, Landroid/os/Message;->arg1:I
++
+     invoke-virtual {v1}, Landroid/os/Message;->sendToTarget()V
+ 
+     .line 896
+     return-void
+ .end method
+ 
+-.method public bindInternal(Lcom/mediatek/ims/internal/ImsVTProvider;II)V
++.method public bindInternal(Lcom/mediatek/ims/internal/ImsVTProvider;IIZ)V
+     .locals 8
+     .param p1, "p"    # Lcom/mediatek/ims/internal/ImsVTProvider;
+     .param p2, "CallId"    # I
+     .param p3, "PhoneId"    # I
++    .param p4, "isMo"    # Z
+ 
+     .line 982
+     new-instance v0, Ljava/lang/StringBuilder;
+@@ -1087,7 +1117,7 @@
+ 
+     move-result v5
+ 
+-    invoke-static {v0, v5}, Lcom/mediatek/ims/internal/ImsVTProvider;->nInitialization(II)I
++    invoke-static {v0, v5, p4}, Lcom/mediatek/ims/internal/ImsVTProvider;->nInitialization(IIZ)I
+ 
+     .line 1043
+     iput-boolean v3, p1, Lcom/mediatek/ims/internal/ImsVTProvider;->mInitComplete:Z
+-- 
+2.43.0
+

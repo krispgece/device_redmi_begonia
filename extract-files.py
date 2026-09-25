@@ -66,8 +66,7 @@ blob_fixups: blob_fixups_user_type = {
     'vendor/bin/hw/android.hardware.keymaster@4.0-service.beanpod': blob_fixup()
         .add_needed('libshim_beanpod.so'),
 
-    ('system/lib64/libsource.so',
-     'vendor/lib/libMtkOmxVdecEx.so'): blob_fixup()
+    'vendor/lib/libMtkOmxVdecEx.so': blob_fixup()
         .add_needed('libui_shim.so'),
 
     ('vendor/lib/libwvhidl.so',
