@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (C) 2014 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<!--
+    MediaTek Codec2 video encoders served by
+    android.hardware.media.c2@1.2-mediatek (IComponentStore/default).
+
+    Codec2InfoBuilder only lists components that have an entry here, so the
+    c2.mtk decoders, secure components and audio components that the store
+    also reports stay hidden, and the OMX.MTK decoders keep decoding.
+
+    rank is decimal and must stay below 256, the OMX default (c2.android and
+    the MTK store default to 512), or OMX.MTK.VIDEO.ENCODER.* sorts first
+    again. No <Alias> to the OMX names while those encoders are still listed.
+
+    Limits are MediaTek's own c2.mtk values (rosemary V14.0.17.0.TFFMIXM).
+-->
+<MediaCodecs>
+    <Encoders>
+        <MediaCodec name="c2.mtk.avc.encoder" type="video/avc" rank="128">
+            <Limit name="size" min="160x160" max="3840x2176" />
+            <Limit name="alignment" value="16x16" />
+            <Limit name="block-size" value="16x16" />
+            <Feature name="can-swap-width-height" />
+            <Limit name="concurrent-instances" max="10" />
+            <Limit name="performance-point-3840x2160" value="30" />
+        </MediaCodec>
+        <MediaCodec name="c2.mtk.hevc.encoder" type="video/hevc" rank="128">
+            <Limit name="size" min="160x128" max="3840x2176" />
+            <Limit name="alignment" value="16x16" />
+            <Limit name="block-size" value="16x16" />
+            <Limit name="quality" range="0-100" default="50" />
+            <Limit name="concurrent-instances" max="10" />
+            <Feature name="bitrate-modes" value="VBR,CBR,CQ" />
+            <Limit name="performance-point-3840x2160" value="30" />
+        </MediaCodec>
+    </Encoders>
+</MediaCodecs>
