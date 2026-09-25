@@ -765,6 +765,32 @@ vendor/lib/vendor.mediatek.hardware.mtkcodecservice@1.1.so
 # Media (Configs)
 vendor/etc/mtk_omx_core.cfg|59d693036a4c70a9b456d34bcecaaadac8fb9406
 
+# Media (Codec2) - from rosemary-user 12 SP1A.210812.016 V14.0.17.0.TFFMIXM,
+# as fixed up by LineageOS rosemary lineage-23.2 (TheMuppets
+# proprietary_vendor_xiaomi_rosemary f919262; fixups in
+# android_device_xiaomi_rosemary 7a8560d extract-files.py:78-128,142-143).
+# Pinned post-fixup copies: do not add blob_fixups for these.
+# mtk_platform_codecs_config.xml must keep driverIntf="v4l2": the other
+# driver path dlopens a 64-bit libvcodecdrv.so that begonia does not have.
+vendor/bin/hw/android.hardware.media.c2@1.2-mediatek-64b;SYMLINK=vendor/bin/hw/android.hardware.media.c2@1.2-mediatek|5d392e2563e47783d74a4860229674fa95a4acec
+vendor/etc/init/android.hardware.media.c2@1.2-mediatek.rc|e09ad9455fc75875f6ccef32572bfc0894c98ab5
+vendor/etc/mtk_platform_codecs_config.xml|637554eaf8302eda615f8e1837374eb1a803b6de
+vendor/etc/vintf/manifest/manifest_media_c2_V1_2_default.xml|622d0480a3af7a162e37c56e0770213d8027000d
+vendor/lib64/libcodec2_hidl@1.0-v31.so|3df6765e88c1595a2710f2187c06f5c2592dd8f9
+vendor/lib64/libcodec2_hidl@1.1-v31.so|273c6f90e02e7402df18d481d270bb29fb4bd3d3
+vendor/lib64/libcodec2_hidl@1.2-v31.so|19f758134593613735168f6a9ea169e62ab72cfc
+vendor/lib64/libcodec2_hidl_plugin-v31.so|0d3071578e7852fe57593d715a823e736ff6440f
+vendor/lib64/libcodec2_mtk_c2store.so|d7b8b233ec701f824befacc2b6f53712c980da21
+vendor/lib64/libcodec2_mtk_vdec.so|31c019e7383cd6b29fd2b1cd71ee3703f65735f9
+vendor/lib64/libcodec2_mtk_venc.so|082fc215f3ea794588c8025e192418adf55601c7
+vendor/lib64/libcodec2_soft_common-v31.so|7d72cae54d6340919f2791bb2fc0f0fb831f7294
+vendor/lib64/libcodec2_vndk-v31.so|0c2c3da4bcca06750fc1ae27fd298ac12e338636
+vendor/lib64/libcodec2_vpp_qt_plugin.so|d17a6af0fdc87e619543912e209042d96badc208
+vendor/lib64/libcodec2_vpp_rs_plugin.so|a0c369a4aeb4766d2372e00c79fdd2b5e7125441
+vendor/lib64/libformatter.so|67a91b42f69d6f056f6e0fefe92e3bb92bd7f15e
+vendor/lib64/libsfplugin_ccodec_utils-v31.so|d4df8e8dcb2a32c9421fb5523ef9ee3e628722ef
+vendor/lib64/libstagefright_bufferqueue_helper-v33.so|bb06d6b33d5f7772374a4d365f56fb63043a1eab
+
 # Media (OMX) - pinned: the stock dump carries different builds of these
 # (libMtkOmxCore bff540c1, libstagefrighthw 56fd4ba9, libMtkOmxVdecEx
 # 27c1975a); the copies below are the ones this ROM was tested with
