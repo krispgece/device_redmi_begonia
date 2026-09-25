@@ -1011,6 +1011,12 @@ system_ext/lib64/libvt_avsync.so:system/lib64/libvt_avsync.so|632cb05532ef2e0220
 system_ext/lib64/vendor.mediatek.hardware.videotelephony-V1-ndk.so:system/lib64/vendor.mediatek.hardware.videotelephony-V1-ndk.so|fc3f645734d4e37fa50b77233d63c7b2eb166014
 system_ext/lib64/vendor.mediatek.hardware.videotelephony@1.0.so:system/lib64/vendor.mediatek.hardware.videotelephony@1.0.so|aee568e770a3835af2df2262c9dc8bb2911da324
 
+# IMS - video telephony HAL, from begonia V12.5.8.0.RGGMIXM
+vendor/bin/hw/vtservice_hidl|d505818a740e8f2dd49aee25b43ade53c0ed0aa5
+vendor/etc/init/init.vtservice_hidl.rc|f2e992214ed5bb99c2c2a135cf1f0996dba8a8a0
+vendor/lib/hw/vendor.mediatek.hardware.videotelephony@1.0-impl.so|5b69d7cfbf584aa8664f1659bb53c4e96d699af5
+vendor/lib/vendor.mediatek.hardware.videotelephony@1.0.so;MODULE_SUFFIX=-vendor|8f239b4b73943a494107ba05b68e6f9111208bbc
+
 # IMS (Boot-Jars)
 system/priv-app/ImsService/ImsService.apk
 system/framework/mediatek-common.jar|2d76dac9118fcad456ab432ce17ed9d7a5ce1932
