@@ -66,6 +66,11 @@ persist.vendor.camera3.pipeline.bufnum.min.low_ram.lcso=6
 persist.vendor.camera3.pipeline.bufnum.min.low_ram.rrzo=6
 persist.vendor.camera3.pipeline.bufnum.min.low_ram.rsso=6
 ro.vendor.camera3.zsl.default=270
+# The MTK ZSL processor waits for an AF-stable history frame, but only re-checks
+# its timeout when the next request arrives. With 12 preview buffers the app runs
+# out after ~11 frames (~0.3 s at 30 fps), so the default 1000 ms timeout never
+# fires and the preview deadlocks. Cap the wait below that budget.
+vendor.debug.camera.zsl.timeout=200
 ro.vendor.mtk_camera_app_version=3
 ro.vendor.mtk_hdr_video_support=1
 ro.vendor.mtk_slow_motion_support=1
