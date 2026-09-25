@@ -3,8 +3,11 @@ package com.miui.mediaviewer;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Process;
 import android.util.Log;
 
 /**
@@ -44,19 +47,25 @@ public class RedirectActivity extends Activity {
         Intent view = new Intent(Intent.ACTION_VIEW)
                 .setDataAndType(uri, type)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        // MiuiCamera hands us a read grant, but it only lives as long as this
+        // activity, and we finish right away. Pass it on only when the view
+        // intent goes straight to one app. When the system chooser has to ask,
+        // the picked app is launched as us after we're gone, the grant check
+        // fails and nothing opens ("Just once"); without the flag the viewer
+        // reads the MediaStore uri with its own media permission.
+        ResolveInfo ri = getPackageManager().resolveActivity(view,
+                PackageManager.MATCH_DEFAULT_ONLY);
+        boolean direct = ri != null && ri.activityInfo != null
+                && !"android".equals(ri.activityInfo.packageName);
+        if (direct && checkUriPermission(uri, Process.myPid(), Process.myUid(),
+                Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                == PackageManager.PERMISSION_GRANTED) {
+            view.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        }
         try {
-            // We were handed a read grant by the camera; pass it on.
-            startActivity(new Intent(view).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION));
-        } catch (SecurityException e) {
-            // No grant to forward: MediaStore uris are readable by any viewer
-            // holding the media permission anyway.
-            try {
-                startActivity(view);
-            } catch (ActivityNotFoundException e2) {
-                Log.e(TAG, "no video viewer for " + uri, e2);
-            }
-        } catch (ActivityNotFoundException e) {
-            Log.e(TAG, "no video viewer for " + uri, e);
+            startActivity(view);
+        } catch (ActivityNotFoundException | SecurityException e) {
+            Log.e(TAG, "cannot open " + uri, e);
         }
     }
 }
