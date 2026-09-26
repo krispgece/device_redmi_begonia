@@ -15,20 +15,43 @@
 -->
 
 <!--
-    MediaTek Codec2 video encoders served by
+    MediaTek Codec2 video components served by
     android.hardware.media.c2@1.2-mediatek (IComponentStore/default).
 
     Codec2InfoBuilder only lists components that have an entry here, so the
-    c2.mtk decoders, secure components and audio components that the store
-    also reports stay hidden, and the OMX.MTK decoders keep decoding.
+    other c2.mtk decoders, secure components and audio components that the
+    store also reports stay hidden, and the OMX.MTK decoders keep decoding.
+
+    The one decoder we list is c2.mtk.vp9.decoder: begonia has no working
+    hardware VP9 decoder otherwise (OMX.MTK.VIDEO.DECODER.VP9 was dropped
+    upstream for crashing ExoPlayer), so VP9 fell back to the slow c2.android
+    software decoder and YouTube capped clips at H.264 1080p. The c2.mtk
+    decoder drives the same V4L2 hardware the kernel has a VP9 vdec path for.
+    avc/hevc keep decoding on OMX, which works, so they stay hidden here.
+
+    It is capped at 2560x1440: the hardware decodes 4K VP9, but 4K playback
+    (decode + downscale to the 1080p panel) is not smooth on this SoC, so we
+    advertise up to 1440p and let YouTube offer 1440p as the top quality. It
+    will not jump to 2160p on the software VP9 decoder (it did not before this
+    hardware decoder existed either). Local 4K HEVC playback is unaffected.
 
     rank is decimal and must stay below 256, the OMX default (c2.android and
     the MTK store default to 512), or OMX.MTK.VIDEO.ENCODER.* sorts first
     again. No <Alias> to the OMX names while those encoders are still listed.
 
-    Limits are MediaTek's own c2.mtk values (rosemary V14.0.17.0.TFFMIXM).
+    Limits are MediaTek's own c2.mtk values (rosemary V14.0.17.0.TFFMIXM);
+    the VP9 decoder size/performance point mirror the OMX HEVC decoder (capped
+    to 1440p), which decodes at these sizes on this hardware.
 -->
 <MediaCodecs>
+    <Decoders>
+        <MediaCodec name="c2.mtk.vp9.decoder" type="video/x-vnd.on2.vp9" rank="128">
+            <Limit name="size" min="16x16" max="2560x1440" />
+            <Feature name="adaptive-playback" />
+            <Limit name="concurrent-instances" max="16" />
+            <Limit name="performance-point-2560x1440" value="30" />
+        </MediaCodec>
+    </Decoders>
     <Encoders>
         <MediaCodec name="c2.mtk.avc.encoder" type="video/avc" rank="128">
             <Limit name="size" min="160x160" max="3840x2176" />
