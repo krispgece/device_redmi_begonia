@@ -15,10 +15,19 @@
 -->
 
 <!--
-    Same measured frame rates as OMX.MTK.VIDEO.ENCODER.{AVC,HEVC} in
-    media_codecs_performance.xml: both drive the same hardware encoder.
+    Same measured frame rates as the OMX.MTK components in
+    media_codecs_performance.xml: they drive the same hardware. The VP9
+    decoder reuses OMX.MTK.VIDEO.DECODER.VP9's numbers.
 -->
 <MediaCodecs>
+    <Decoders>
+        <MediaCodec name="c2.mtk.vp9.decoder" type="video/x-vnd.on2.vp9" update="true">
+            <Limit name="measured-frame-rate-320x180" range="143-315" />
+            <Limit name="measured-frame-rate-640x360" range="185-408" />
+            <Limit name="measured-frame-rate-1280x720" range="80-177" />
+            <Limit name="measured-frame-rate-1920x1080" range="90-198" />
+        </MediaCodec>
+    </Decoders>
     <Encoders>
         <MediaCodec name="c2.mtk.avc.encoder" type="video/avc" update="true">
             <Limit name="measured-frame-rate-320x240" range="465-1024" />
