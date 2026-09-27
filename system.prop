@@ -50,6 +50,7 @@ persist.sys.mdlog_dumpback=2
 # Radio
 persist.sys.radio.force_lte_ca=false
 ro.telephony.sim.count=2
+ro.telephony.iwlan_video_available=true
 persist.sys.fflag.override.settings_provider_model=false
 
 # Sensors
